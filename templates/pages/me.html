@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load partials %}
+{% block content %}
+    <div class="container my-5 text-center">
+        {% include "home.html#welcome" %}
+        <p class="mt-4">Try our custom loading button below:</p>
+        {% include "compo/common/button.html" with text="Click me!" %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% load static %}
+
+<button 
+    class="custom-button btn btn-primary"
+    {% if attrs.class %}class="{{ attrs.class }}"{% endif %}
+    {% if attrs.disabled %}disabled{% endif %}
+>
+    <span class="button-content">
+        <span class="button-text">{{ text|default:"Submit" }}</span>
+        <span class="spinner">
+            <div class="loading-spinner"></div>
+        </span>
+    </span>
+</button>
+
+<style>
+    .custom-button {
+        position: relative;
+        transition: all 0.3s ease;
+        min-width: 120px;
+    }
+    
+    .custom-button.loading {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    .button-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .spinner {
+        display: none;
+    }
+    
+    .loading .spinner {
+        display: inline-block;
+    }
+
+    .loading-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.custom-button');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const btn = e.currentTarget;
+                const textSpan = btn.querySelector('.button-text');
+                const originalText = textSpan.textContent;
+                
+                // Prevent multiple clicks
+                if (btn.classList.contains('loading')) {
+                    return;
+                }
+                
+                // Save original text
+                btn.dataset.originalText = originalText;
+                
+                // Update button state
+                btn.classList.add('loading');
+                btn.disabled = true;
+                textSpan.textContent = 'Please wait...';
+                
+                // Simulate request completion after 2 seconds (remove this in production)
+                setTimeout(() => {
+                    // Restore button state
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    textSpan.textContent = btn.dataset.originalText;
+                }, 2000);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load partials %}
+{% block content %}
+    <div class="container my-5 text-center">
+        {% partialdef welcome inline%}
+        <h1>Django Counter App</h1>
+        <p class="lead text-muted">A real-time counter using HTMX and Django Template Partials</p>
+        {% endpartialdef %}
+        <div class="card col-lg-5 mt-5 p-5 mx-auto shadow-sm">
+            <div class="card-body">
+                {% partialdef counter inline%}
+                <h5 class="card-title" id="count">Current Count: {{count}}</h5>
+                {% endpartialdef %}
+                <div class="d-flex mt-3 justify-content-around">
+                    <button class="btn btn-danger" hx-get="{% url 'counter' 'decrease' %}" hx-target="#count" hx-swap="outerHTML">Decrement</button>
+                    <button class="btn btn-success" hx-get="{% url 'counter' 'increase' %}" hx-target="#count" hx-swap="outerHTML">Increment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
